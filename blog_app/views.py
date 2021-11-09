@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import postform
 
+
+
 # user login logout
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib.auth import authenticate, logout,login,update_session_auth_hash
@@ -74,13 +76,7 @@ def change_password(request):
         return render(request, 'change_password.html', {'form': form})
     return redirect('login')
 
-# forget password
-def forgot_password(request):
-    if request.method == 'POST':
-        return password_reset(request, 
-            from_email=request.POST.get('email'))
-    else:
-        return render(request, 'forgot_password.html')
+
 
 
 # logout system
@@ -117,47 +113,3 @@ def delete(request,id):
     return HttpResponse('data deleted')
 
 
-
-
-
-
-
-# from django.contrib.auth.views import password_reset,password_reset_done,password_reset_confirm,password_reset_complete
-
-
-# @login_required    
-# def lexrequestpassword(request):
-#     """
-#     Reset Password
-#     """
-#     path = reverse('lexresetpassworddone')
-
-#     return password_reset(request,post_reset_redirect=path)
-
-# @login_required    
-# def lexresetpassworddone(request):
-#     """
-#     Reset Password Done
-#     """
-#     path = reverse('lexresetpasswordconfirmed')
-
-#     return password_reset_done(request,template_name=path)
-
-
-# @login_required    
-# def lexresetpasswordconfirmed(request):
-#     """
-#     Reset Password Confirmed
-#     """
-#     path = reverse('lexresetpasswordcompleted')
-
-#     return password_reset_confirm(request,post_reset_redirect=path)
-
-# @login_required    
-# def lexresetpasswordcompleted(request):
-#     """
-#     Reset Password Completed
-#     """
-#     path = reverse('lexmain')
-
-#     return password_reset_complete(request,post_reset_redirect=path) 
