@@ -86,8 +86,8 @@ def logoutuser(request):
 
 def userdashboard(request):
     data =Post.objects.all()
-    #return HttpResponse('index page')
-    return render(request,'userdashboard.html',{'data':data})
+    user=request.user
+    return render(request,'userdashboard.html',{'data':data,'user':user})
 
 
 
