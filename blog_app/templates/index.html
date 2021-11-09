@@ -1,0 +1,55 @@
+{% extends "base.html" %} 
+{% block content %}
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #d728dd;
+    }
+    
+    .head_text {
+        color: rgb(54, 214, 22);
+    }
+    
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+</style>
+
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1 class=" site-heading my-4 mt-3 text-white"> Welcome to my  Blog </h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        {% for post in data %}
+        <div class="col-md-6 mx-auto ">
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
+                    <p class="card-text">{{post.content|slice:":100" }}</p>
+                   
+                   
+                </div>
+                <p> <img src="{{ post.image.url }}" class="img-responsive" style="width: 30%; float: left; margin-right: 10px;" /></p>
+                  
+              <!-- <p><a href="delete{{post.id}}">delete post</a></p> --> 
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div> 
+{%endblock%}
