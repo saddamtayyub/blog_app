@@ -8,12 +8,39 @@
     }
     
     .head_text {
-        color: rgb(54, 214, 22);
+        color: rgb(32, 219, 188);
     }
     
     .card {
         box-shadow: 0 16px 48px #E3E7EB;
     }
+   
+        a:link {
+          color: rgb(15, 14, 15);
+          background-color: transparent;
+          text-decoration: none;
+        }
+        
+        a:visited {
+          color: pink;
+          background-color: transparent;
+          text-decoration: none;
+        }
+        
+        a:hover {
+          color: red;
+          background-color: transparent;
+          text-decoration: underline;
+        }
+        
+        a:active {
+          color: yellow;
+          background-color: transparent;
+          text-decoration: underline;
+        }
+        
+
+
 </style>
 
 <header class="masthead">
@@ -22,8 +49,18 @@
         <div class="row">
             <div class=" col-md-8 col-md-10 mx-auto">
                 <div class="site-heading">
-                    <h1 class=" site-heading my-4 mt-3 text-white"> Welcome to my  Blog </h1>
-                    
+                    <div class="row ">
+                        <div class="col-sm-5 mx-auto ">
+                            <h1 class=" site-heading my-4 mt-3 text-white"> Welcome to my  Blog </h1>
+                        </div>
+                        <div class="col-sm-7 mx-auto m-4">
+                            <a href="/?type=sad_sayeri" >sad shayeri</a> | 
+                        <a href="/?type=love_sayeri" >love shayeri</a> |
+                        <a href="/?type=heart_sayeri" >Heart shayeri</a>|
+                        <a href="/?type=birthday_sayeri" >Birthday shayeri</a>|
+                        <a href="/?type=attitude_sayeri" >Attitude shayeri</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,6 +76,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
+                    <h6>cotegory:{{post.cotegory}}</h6>
                     <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
                     <p class="card-text">{{post.content|slice:":100" }}</p>
                    

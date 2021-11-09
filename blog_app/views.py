@@ -21,9 +21,31 @@ from django.contrib.auth import authenticate, logout,login,update_session_auth_h
 # Create your views here.
 
 def indexpage(request):
-    data =Post.objects.all()
-    #return HttpResponse('index page')
-    return render(request,'index.html',{'data':data})
+    type=request.GET.get('type')
+    print(type)
+    if type=='sad_sayeri':  
+        data =Post.objects.filter(cotegory=type)
+        return render(request,'index.html',{'data':data})
+    elif type=='love_sayeri':              
+        data =Post.objects.filter(cotegory=type)
+        return render(request,'index.html',{'data':data}) 
+    elif type=='sad_sayeri':                                      
+        data =Post.objects.filter(cotegory=type)
+        return render(request,'index.html',{'data':data})
+    elif type=='birthday_sayeri':                                      
+        data =Post.objects.filter(cotegory=type)
+        return render(request,'index.html',{'data':data})
+    elif type=='heart_sayeri':                                      
+        data =Post.objects.filter(cotegory=type)
+        return render(request,'index.html',{'data':data})
+    elif type=='attitude_sayeri':                                      
+        data =Post.objects.filter(cotegory=type)
+        return render(request,'index.html',{'data':data})    
+    else:           #all shayeri
+       data =Post.objects.all()
+       return render(request,'index.html',{'data':data})
+
+    
 
 
 
