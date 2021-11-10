@@ -1,5 +1,7 @@
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 # Create your models here.
 
 cotegory=[('sad_sayeri','sad_sayeri'),
@@ -33,3 +35,29 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class blogcomment(models.Model):
+    sn=models.AutoField(primary_key=True)
+    comment=models.TextField()
+    userc=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    postid=models.IntegerField(null=True)
+    parent=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    timestamp=models.DateTimeField(default=now)
+
+    def __str__(self):
+        return self.comment
+
+
+
+class bloglike(models.Model):
+    sn=models.AutoField(primary_key=True)
+    userc=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    postid=models.IntegerField(null=True)
+    parent=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    timestamp=models.DateTimeField(default=now)
+
+    def __str__(self):
+        return self.postid

@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import request
 # decorator login
 from django.contrib.auth.decorators import login_required
-from .models import Post
+from .models import Post , blogcomment, bloglike
 from .forms import postform
 
 
@@ -80,7 +80,8 @@ def signupuser(request):
 
 
 
-  # change password 
+# change password 
+@login_required
 def change_password(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -101,20 +102,30 @@ def change_password(request):
 
 
 
-# logout system
+#logout system
+
 def logoutuser(request):
     logout(request)
     return redirect('home')
 
+
+@login_required
 def userdashboard(request):
     data =Post.objects.all()
     user=request.user
     return render(request,'userdashboard.html',{'data':data,'user':user})
 
+# data by id
+def postbyid(request,id):
+    data =Post.objects.get(id=id)
+    lk=bloglike.objects.filter(postid=id)
+    cm=blogcomment.objects.filter(postid=id)
+    user=request.user
+    print("===============",user)
+    return render(request,'postbyid.html',{'post':data,'cm':cm,'like':lk,'user':user})
 
 
-
-
+@login_required
 def blogpost(request):
     
     if request.method == 'POST':
@@ -128,6 +139,7 @@ def blogpost(request):
     return render(request,'post.html',{'form':form})    
 
 
+@login_required
 def delete(request,id):
     print(id)
     data=Post.objects.get(id=id)
@@ -135,3 +147,47 @@ def delete(request,id):
     return HttpResponse('data deleted')
 
 
+@login_required
+def update(request,id):
+    print(id)
+    data=Post.objects.get(id=id)
+    if request.method=='POST':
+        fm=postform(request.POST, request.FILES,instance=data)
+        fm.save()
+        return redirect('userdashboard') 
+    form=postform(instance=data)
+    return render(request,'update.html',{'form':form})
+
+
+
+
+def comment(request):
+    comment=request.POST['comment']
+    userc=request.user
+    postid=request.POST['postid']
+    d=postid
+    post=Post.objects.get(id=postid)
+    print("==",comment,"gggg",userc,postid,post)
+    d=blogcomment(comment=comment,userc=userc,post=post,postid=d)
+    if comment=="":
+        return redirect(f'/postbyid{post.id}')
+    d.save()
+        
+    return redirect(f'/postbyid{post.id}')
+    #return HttpResponse('comment successfully')
+
+
+def like(request):
+    userc=request.user
+    postid=request.POST['postid']
+    d=postid
+    post=Post.objects.get(id=postid)
+    d=bloglike(userc=userc,post=post,postid=d)
+    try:
+        l=bloglike.objects.get(postid=postid)
+        user=l.userc
+        if userc==user:
+            return redirect(f'/postbyid{post.id}')
+    except:
+        d.save()   
+        return redirect(f'/postbyid{post.id}')
