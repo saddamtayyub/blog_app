@@ -59,5 +59,14 @@ class bloglike(models.Model):
     parent=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     timestamp=models.DateTimeField(default=now)
 
-    def __str__(self):
-        return self.postid
+    # def __str__(self):
+    #     return self.postid
+
+
+class likeoncomment(models.Model):
+    userc=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    postid=models.IntegerField(null=True)
+    comenttid=models.IntegerField(null=True)
+    parent=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    timestamp=models.DateTimeField(default=now)

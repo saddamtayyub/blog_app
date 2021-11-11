@@ -64,13 +64,15 @@
                 <p> <img src="{{ post.image.url }}" class="img-responsive" style="width: 30%; float: left; margin-right: 10px;" /></p>
                   
               
-                 <h1>login and comment</h1>
+                {% if user.is_authenticated %}
+                
+           
                  
                 <form method="POST" action="/like">
                     {% csrf_token%}
                     
                      <input type="hidden" name="postid" value="{{post.id}}">
-                    <input type="submit" value="like">  {{like.count}}
+                    <input type="submit" value="like">  
                 </form>
                
             
@@ -79,8 +81,12 @@
                     <input type="textarea" name="comment">
                      <input type="hidden" name="postid" value="{{post.id}}">
                     <input type="submit" value="comment">  
-                </form>
+                </form>  {%else%}
+                <h3>login and comment</h3>
+                {% endif %}
+                <h4>Total like:{{like.count}}</h4>
                      {% if cm.count %}
+                     
                     <h4>Total comment:{{cm.count}}</h4>
 
                     {%else%}
@@ -91,6 +97,15 @@
                     
                 {% for data in cm%}
                 <h5>user:{{data.userc}} |{{data.comment}}</h5>
+
+                {% if user.is_authenticated %}
+                <form method="POST" action="/likeoncommentt">
+                    {% csrf_token%}
+                    <input type="hidden" name="commentid" value="{{data.sn}}">
+                     <input type="hidden" name="postid" value="{{post.id}}">
+                    <input type="submit" value="like"> <a href="/slike{{data.sn}}">show like</a>
+                </form>  
+                {%endif%}
                 {%endfor%}
             </div>
            

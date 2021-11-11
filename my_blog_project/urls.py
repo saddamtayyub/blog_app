@@ -40,6 +40,8 @@ urlpatterns = [
     path('update<int:id>',views.update,name="update"),
     path('comment',views.comment,name='comment'),
     path('like',views.like,name='like'),
+    path('likeoncommentt',views.likeoncommentt,name='likeoncommentt'),
+    path('slike<int:id>',views.slike,name='slike'),
     #forget password
     path('password-reset/',auth_views.PasswordResetView.as_view(template_name='password_reset.html'),name='password_reset'),
     path('password-reset/done/',auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),name='password_reset_done'),

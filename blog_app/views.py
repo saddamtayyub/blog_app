@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import request
 # decorator login
 from django.contrib.auth.decorators import login_required
-from .models import Post , blogcomment, bloglike
+from .models import Post , blogcomment , bloglike,likeoncomment
 from .forms import postform
 
 
@@ -58,7 +58,9 @@ def loginuser(request):
         if user is not None:
             login(request, user)
             #return HttpResponse('login suc')
-            return redirect('userdashboard')
+            if request.user.is_superuser:
+                return redirect('userdashboard')
+            return redirect('home')
         else:
             return HttpResponse('incorect password or name')
     return render(request,'login.html')
@@ -120,8 +122,10 @@ def postbyid(request,id):
     data =Post.objects.get(id=id)
     lk=bloglike.objects.filter(postid=id)
     cm=blogcomment.objects.filter(postid=id)
+    #lc=likeoncomment.objects.filter(postid=id)
     user=request.user
     print("===============",user)
+   # return render(request,'postbyid.html',{'post':data,'cm':cm,'user':user})
     return render(request,'postbyid.html',{'post':data,'cm':cm,'like':lk,'user':user})
 
 
@@ -178,16 +182,54 @@ def comment(request):
 
 
 def like(request):
+    #return HttpResponse('liked')
     userc=request.user
     postid=request.POST['postid']
     d=postid
     post=Post.objects.get(id=postid)
     d=bloglike(userc=userc,post=post,postid=d)
+    
     try:
-        l=bloglike.objects.get(postid=postid)
+        l=bloglike.objects.get(postid=postid,userc=userc)
         user=l.userc
         if userc==user:
+            l.delete()
             return redirect(f'/postbyid{post.id}')
-    except:
         d.save()   
         return redirect(f'/postbyid{post.id}')
+    except:
+    
+        d.save()   
+        return redirect(f'/postbyid{post.id}')
+
+
+
+
+def likeoncommentt(request):
+    #return HttpResponse('liked')
+    user=request.user
+    postid=request.POST['postid']
+    cmt=request.POST['commentid']
+    post=Post.objects.get(id=postid)
+    print(user,postid,cmt,post)
+    d=likeoncomment(userc=user,postid=postid,comenttid=cmt,post=post)
+    
+    try:
+        l=likeoncomment.objects.get(comenttid=cmt,userc=user)
+        userr=l.userc
+        if request.user==userr:
+            l.delete()
+            print('like delete')
+            return redirect(f'/postbyid{post.id}')
+        d.save()   
+        return redirect(f'/postbyid{post.id}')
+    except:
+    
+        d.save()  
+        print('likes saved') 
+        return redirect(f'/postbyid{post.id}')        
+
+
+def slike(request,id):
+    d=likeoncomment.objects.filter(comenttid=id)
+    return render(request,'likeoncomment.html',{'like':d})
