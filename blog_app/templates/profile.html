@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user Profile</title>
+</head>
+<body>
+    
+    <table border="5">
+        <h1>Profile</h1> <a href="/" >home</a>
+        <tr>
+            <thead>
+                <th>name</th>
+                <th>location</th>
+                <th>Gender</th>
+                <th>Mobile</th>
+            </thead>
+        </tr>
+        <tr>
+            <td>{{data.full_name}}</td>
+            <td>{{data.location}}</td>
+            <td>{{data.gender}}</td>
+            <td>{{data.mobile}}</td>
+        </tr>
+
+    </table>
+</body>
+
+<h6>total post:{{post.count}}</h6>
+<h1></h1>
+{% for post in post%}
+
+{{post.id}} :{{post.title}}  <br>
+{%endfor%}
+
+<h1>notification :{{noti.count}}</h1>
+
+{% for noti in noti%}
+user:{{noti.userc}} <br>
+comment : {{noti.comment}} <br>
+postid:{{noti.postid}} <br>
+post:{{noti.post}} <br>
+timestamp:{{noti.timestamp}}<br>
+<br>    {%endfor%}
+</html>

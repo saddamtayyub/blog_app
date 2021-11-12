@@ -34,6 +34,7 @@
             <div class=" col-md-8 col-md-10 mx-auto">
                 <div class="site-heading">
                     <h1 class=" site-heading my-4 mt-3 text-white"> Welcome {{user}}</h1>
+                    {% if request.user.is_superuser%}
                     <h1><p><a href="/post">create post</a></p> </h1>
                     <h6> <a href="/changepassword" >change password</a> </h6>
                     <h6> <a href="/logout" >log out</a> </h6>
@@ -64,7 +65,8 @@
             </div>
            
         </div>
-        {% endfor %}
+        
+        {% endfor %}    {%endif%}
     </div>
 </div> 
 </body>

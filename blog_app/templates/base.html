@@ -51,15 +51,24 @@
                         <li class="nav-item text-black">
                             <a class="nav-link text-black font-weight-bold" href="/contact">Contact</a>
                         </li>
+                        
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item text-blue">
+                            <a class="nav-link text-blue font-weight-bold" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item text-blue">
+                            <a class="nav-link text-blue font-weight-bold" href="/logout">logout</a>
+                        </li> 
+                        {%else%}
+
                         <li class="nav-item text-blue">
                             <a class="nav-link text-blue font-weight-bold" href="/login">Login</a>
                         </li>
                         <li class="nav-item text-blue">
-                            <a class="nav-link text-blue font-weight-bold" href="/logout">logout</a>
-                        </li>
-                        <li class="nav-item text-blue">
                             <a class="nav-link text-blue font-weight-bold" href="/signupuser">sign up</a>
                         </li>
+                        {%endif%}
+                       
                     </ul>
                 </div>
             </div>

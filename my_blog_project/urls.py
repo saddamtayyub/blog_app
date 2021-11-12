@@ -28,6 +28,7 @@ admin.site.index_title="MY SHAYERI BLOG"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.indexpage,name='home'),
+    path('profile',views.profile,name='profile'),
     path('login',views.loginuser, name='login'),
     path('signupuser',views.signupuser,name='signupuser'),
     path('changepassword',views.change_password,name='changepassword'),

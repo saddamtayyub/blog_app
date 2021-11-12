@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import request
 # decorator login
 from django.contrib.auth.decorators import login_required
-from .models import Post , blogcomment , bloglike,likeoncomment
+from .models import Post , blogcomment , bloglike,likeoncomment,UserProfile,notification
 from .forms import postform
 
 
@@ -15,6 +15,10 @@ from .forms import postform
 # user login logout
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib.auth import authenticate, logout,login,update_session_auth_hash
+
+
+
+            #today task create user profile and send notification
 
 
 
@@ -45,7 +49,18 @@ def indexpage(request):
        data =Post.objects.all()
        return render(request,'index.html',{'data':data})
 
-    
+
+
+
+# profile
+@login_required
+def profile(request):
+    user=request.user
+    data=UserProfile.objects.get(user=user)
+    post=Post.objects.filter(author=user)
+    noti=notification.objects.filter(postauthor=user).order_by('-id')[:10]
+    return render(request,'profile.html',{'data':data,'post':post,'noti':noti})
+    #return render(request,'profile.html',{'data':data,'post':post})
 
 
 
@@ -166,19 +181,26 @@ def update(request,id):
 
 
 def comment(request):
+    postauthor=request.POST['postauthor']
     comment=request.POST['comment']
     userc=request.user
     postid=request.POST['postid']
     d=postid
     post=Post.objects.get(id=postid)
-    print("==",comment,"gggg",userc,postid,post)
+    print(postauthor,"==",comment,"gggg",userc,postid,post)
+          # comment notication 
+    # n=notification(userc=userc,post=post,postid=postid,
+    # postauthor=postauthor,comment=comment)
     d=blogcomment(comment=comment,userc=userc,post=post,postid=d)
     if comment=="":
         return redirect(f'/postbyid{post.id}')
     d.save()
-        
+    n=notification(userc=userc,post=post,postid=postid,
+    postauthor=postauthor,comment=comment)
+    n.save()   
     return redirect(f'/postbyid{post.id}')
     #return HttpResponse('comment successfully')
+
 
 
 def like(request):

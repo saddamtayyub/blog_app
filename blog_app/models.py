@@ -1,8 +1,30 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
 from django.utils.timezone import now
+
+
 # Create your models here.
+
+class UserProfile(models.Model):  
+    user = models.OneToOneField(User, related_name='profile',on_delete=CASCADE)
+    full_name=models.CharField(max_length=50)
+    location = models.CharField(max_length=140)  
+    gender = models.CharField(max_length=140) 
+    mobile=models.CharField(max_length=50) 
+
+
+    def __str__(self):
+        return self.full_name
+
+
+
+
+
+
+
+
 
 cotegory=[('sad_sayeri','sad_sayeri'),
 ('love_sayeri','love_sayeri'),
@@ -70,3 +92,14 @@ class likeoncomment(models.Model):
     comenttid=models.IntegerField(null=True)
     parent=models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     timestamp=models.DateTimeField(default=now)
+
+
+
+class notification(models.Model):
+    userc=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE)
+    postid=models.IntegerField(null=True)
+    postauthor=models.CharField(max_length=50)
+    comment=models.TextField()
+    timestamp=models.DateTimeField(default=now)
+

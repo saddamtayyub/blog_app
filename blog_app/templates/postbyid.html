@@ -70,7 +70,7 @@
                  
                 <form method="POST" action="/like">
                     {% csrf_token%}
-                    
+                    <input type="hidden" name="postauthor" value="{{post.author}}">
                      <input type="hidden" name="postid" value="{{post.id}}">
                     <input type="submit" value="like">  
                 </form>
@@ -79,6 +79,7 @@
                 <form method="POST" action="/comment">
                     {% csrf_token%}
                     <input type="textarea" name="comment">
+                    <input type="hidden" name="postauthor" value="{{post.author}}">
                      <input type="hidden" name="postid" value="{{post.id}}">
                     <input type="submit" value="comment">  
                 </form>  {%else%}
